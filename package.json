@@ -1,0 +1,35 @@
+{
+  "name": "react-messageformat",
+  "version": "0.1.0",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.js",
+  "scripts": {
+    "format": "prettier --write --list-different '*.config.js' 'src/**/*.{js,jsx,ts,tsx}'",
+    "build": "rollup -c",
+    "typecheck": "tsc",
+    "test": "jest"
+  },
+  "files": [
+    "dist"
+  ],
+  "devDependencies": {
+    "@types/jest": "^23.0.0",
+    "jest": "^23.0.0",
+    "prettier": "^1.0.0",
+    "rollup": "^0.65.0",
+    "rollup-plugin-commonjs": "^9.0.0",
+    "rollup-plugin-json": "^3.0.0",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup-plugin-typescript": "^0.8.1",
+    "ts-jest": "^23.0.0",
+    "typescript": "^3.0.0"
+  },
+  "dependencies": {
+    "make-plural": "^4.0.0",
+    "messageformat-parser": "^3.0.0",
+    "tslib": "1.9.3"
+  },
+  "resolutions": {
+    "tslib": "1.9.3"
+  }
+}
