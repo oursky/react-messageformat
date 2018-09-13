@@ -9,7 +9,7 @@ $ yarn add @oursky/react-messageformat
 
 ## Usage
 
-```
+```typescript
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { Provider, FormattedMessage } from "@oursky/react-messageformat";
