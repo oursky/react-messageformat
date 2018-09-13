@@ -16,11 +16,11 @@
   "devDependencies": {
     "@types/jest": "^23.0.0",
     "@types/react": "^16.0.0",
-    "@types/react-test-renderer": "^16.0.2",
+    "@types/react-test-renderer": "^16.0.0",
     "jest": "^23.0.0",
     "prettier": "^1.0.0",
     "react": "^16.3.0",
-    "react-test-renderer": "^16.5.0",
+    "react-test-renderer": "^16.0.0",
     "rollup": "^0.65.0",
     "rollup-plugin-commonjs": "^9.0.0",
     "rollup-plugin-json": "^3.0.0",
@@ -32,10 +32,7 @@
   "dependencies": {
     "make-plural": "^4.0.0",
     "messageformat-parser": "^3.0.0",
-    "tslib": "1.9.3"
-  },
-  "resolutions": {
-    "tslib": "1.9.3"
+    "tslib": "^1.9.3"
   },
   "peerDependencies": {
     "react": "^16.3.0"

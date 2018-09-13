@@ -34,7 +34,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-test-renderer@^16.0.2":
+"@types/react-test-renderer@^16.0.0":
   version "16.0.2"
   resolved "https://registry.yarnpkg.com/@types/react-test-renderer/-/react-test-renderer-16.0.2.tgz#2715eae40df08f80b3620c498598c8615693b6c6"
   dependencies:
@@ -2478,7 +2478,7 @@ react-is@^16.5.0:
   version "16.5.0"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.5.0.tgz#2ec7c192709698591efe13722fab3ef56144ba55"
 
-react-test-renderer@^16.5.0:
+react-test-renderer@^16.0.0:
   version "16.5.0"
   resolved "https://registry.yarnpkg.com/react-test-renderer/-/react-test-renderer-16.5.0.tgz#1aeca0edc4f27f63265dcaed80ba82e11e762f56"
   dependencies:
@@ -3082,7 +3082,7 @@ ts-jest@^23.0.0:
     json5 "^0.5.0"
     lodash "^4.17.10"
 
-tslib@1.9.3:
+tslib@^1.9.3:
   version "1.9.3"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.9.3.tgz#d7e4dd79245d85428c4d7e4822a79917954ca286"
 
