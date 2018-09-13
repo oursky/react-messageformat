@@ -27,6 +27,28 @@ interface MessageContextProps {
 
 type MessageProps = MessageOwnProps & MessageContextProps;
 
+export interface DateTimeFormatOptions {
+  hour12?: boolean;
+  weekday?: "narrow" | "short" | "long";
+  era?: "narrow" | "short" | "long";
+  year?: "numeric" | "2-digit";
+  month?: "numeric" | "2-digit" | "narrow" | "short" | "long";
+  day?: "numeric" | "2-digit";
+  hour?: "numeric" | "2-digit";
+  minute?: "numeric" | "2-digit";
+  second?: "numeric" | "2-digit";
+}
+
+export interface FormattedDateOwnProps extends DateTimeFormatOptions {
+  value: Date;
+}
+
+interface FormattedDateContextProps {
+  locale: string;
+}
+
+type FormattedDateProps = FormattedDateOwnProps & FormattedDateContextProps;
+
 const defaultValue: ContextValue = {
   locale: "en",
   compile: () => [],
@@ -35,6 +57,8 @@ const defaultValue: ContextValue = {
 const { Provider: Provider_, Consumer } = React.createContext<ContextValue>(
   defaultValue
 );
+
+export { Consumer };
 
 export class Provider extends React.Component<ProviderProps> {
   // This is not part of the state because
@@ -123,4 +147,22 @@ export class FormattedMessage extends React.Component<MessageOwnProps> {
   }
 }
 
-export { Consumer };
+class FormattedDate_ extends React.Component<FormattedDateProps> {
+  render() {
+    const { value, locale, ...options } = this.props;
+    const dateFormat = new Intl.DateTimeFormat(locale, options);
+    const output = dateFormat.format(value);
+    return output;
+  }
+}
+
+export class FormattedDate extends React.Component<FormattedDateOwnProps> {
+  renderDate = (contextValue: ContextValue) => {
+    const { locale } = contextValue;
+    return <FormattedDate_ {...this.props} locale={locale} />;
+  };
+
+  render() {
+    return <Consumer>{this.renderDate}</Consumer>;
+  }
+}

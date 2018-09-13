@@ -1,3 +1,3 @@
 export { parse } from "./parse";
 export { evaluate } from "./eval";
-export { Provider, Consumer, FormattedMessage } from "./react";
+export { Provider, Consumer, FormattedMessage, FormattedDate } from "./react";

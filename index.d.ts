@@ -60,6 +60,20 @@ export interface FormattedMessageProps {
   id: string;
   values?: Values;
 }
+export interface DateTimeFormatOptions {
+  hour12?: boolean;
+  weekday?: "narrow" | "short" | "long";
+  era?: "narrow" | "short" | "long";
+  year?: "numeric" | "2-digit";
+  month?: "numeric" | "2-digit" | "narrow" | "short" | "long";
+  day?: "numeric" | "2-digit";
+  hour?: "numeric" | "2-digit";
+  minute?: "numeric" | "2-digit";
+  second?: "numeric" | "2-digit";
+}
+export interface FormattedDateProps extends DateTimeFormatOptions {
+  value: Date;
+}
 
 export function parse(source: string): Token[];
 export function evaluate(
@@ -70,3 +84,4 @@ export function evaluate(
 export class Provider extends React.Component<ProviderProps> {}
 export class Consumer extends React.Component<ConsumerProps> {}
 export class FormattedMessage extends React.Component<FormattedMessageProps> {}
+export class FormattedDate extends React.Component<FormattedDateProps> {}

@@ -3,6 +3,7 @@ import * as renderer from "react-test-renderer";
 import {
   Provider,
   FormattedMessage,
+  FormattedDate,
   Consumer,
   MessageOwnProps,
 } from "../react";
@@ -110,6 +111,17 @@ test("imperative", () => {
     .create(
       <Provider locale={locale} messageByID={messageByID}>
         <Input id="plain.string" />
+      </Provider>
+    )
+    .toJSON();
+  expect(tree).toMatchSnapshot();
+});
+
+test("FormattedDate", () => {
+  const tree = renderer
+    .create(
+      <Provider locale={locale} messageByID={messageByID}>
+        <FormattedDate value={new Date("2018-08-08")} month="long" />
       </Provider>
     )
     .toJSON();
