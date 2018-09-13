@@ -7,6 +7,16 @@ $ npm install --save @oursky/react-messageformat
 $ yarn add @oursky/react-messageformat
 ```
 
+This library assumes the present of `Intl`.
+
+You must apply your own polyfill in your application.
+
+You must apply your own polyfill in your application.
+
+You must apply your own polyfill in your application.
+
+We have to say three times because it is so important.
+
 ## Usage
 
 ```typescript
