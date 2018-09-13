@@ -10,7 +10,8 @@
     "test": "jest"
   },
   "files": [
-    "dist"
+    "dist",
+    "index.d.ts"
   ],
   "devDependencies": {
     "@types/jest": "^23.0.0",
