@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`argument 1`] = `
+Array [
+  "I meet ",
+  "John",
+]
+`;
+
+exports[`plain.string 1`] = `"Hello world"`;
+
+exports[`plural 1`] = `"four"`;
+
+exports[`react.element 1`] = `
+Array [
+  "Hello world",
+  " ",
+  "AnyComponent",
+  " ",
+  "I meet ",
+  "John",
+  " ",
+  "ichi",
+]
+`;
