@@ -5,6 +5,7 @@
     "moduleResolution": "node",
     "downlevelIteration": true,
     "importHelpers": true,
+    "jsx": "React",
     "lib": ["ES5", "DOM", "ES2015.Promise"],
     "strict": true,
     "noUnusedLocals": true,
