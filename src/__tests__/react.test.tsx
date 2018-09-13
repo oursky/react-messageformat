@@ -1,6 +1,11 @@
 import * as React from "react";
 import * as renderer from "react-test-renderer";
-import { Provider, FormattedMessage, MessageOwnProps } from "../react";
+import {
+  Provider,
+  FormattedMessage,
+  Consumer,
+  MessageOwnProps,
+} from "../react";
 
 const locale = "en";
 const messageByID = {
@@ -15,6 +20,16 @@ function Shortcut(props: MessageOwnProps) {
     <Provider locale={locale} messageByID={messageByID}>
       <FormattedMessage {...props} />
     </Provider>
+  );
+}
+
+function Input(props: MessageOwnProps) {
+  return (
+    <Consumer>
+      {({ renderToString }) => {
+        return <input placeholder={renderToString(props.id, props.values)} />;
+      }}
+    </Consumer>
   );
 }
 
@@ -84,6 +99,17 @@ test("react.element", () => {
             ),
           }}
         />
+      </Provider>
+    )
+    .toJSON();
+  expect(tree).toMatchSnapshot();
+});
+
+test("imperative", () => {
+  const tree = renderer
+    .create(
+      <Provider locale={locale} messageByID={messageByID}>
+        <Input id="plain.string" />
       </Provider>
     )
     .toJSON();

@@ -7,6 +7,12 @@ Array [
 ]
 `;
 
+exports[`imperative 1`] = `
+<input
+  placeholder="Hello world"
+/>
+`;
+
 exports[`plain.string 1`] = `"Hello world"`;
 
 exports[`plural 1`] = `"four"`;
