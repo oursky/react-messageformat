@@ -15,6 +15,10 @@ export interface ProviderProps {
   children?: React.ReactNode;
 }
 
+interface ProviderState {
+  version: number;
+}
+
 export interface MessageOwnProps {
   id: string;
   values?: Values;
@@ -60,17 +64,20 @@ const { Provider: Provider_, Consumer } = React.createContext<ContextValue>(
 
 export { Consumer };
 
-export class Provider extends React.Component<ProviderProps> {
-  // This is not part of the state because
-  // compile will be called within render
-  // and we cannot use setState within render.
-  // Also the value should not affect render
-  // beacuse it works as a cache.
+export class Provider extends React.Component<ProviderProps, ProviderState> {
   tokensByID: { [key: string]: Token[] | undefined } = {};
+  state = {
+    version: 0,
+  };
 
   componentDidUpdate(prevProps: ProviderProps) {
     if (this.props.locale !== prevProps.locale) {
       this.tokensByID = {};
+      this.setState(prevState => {
+        return {
+          version: prevState.version + 1,
+        };
+      });
     }
   }
 
