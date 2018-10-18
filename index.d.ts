@@ -43,6 +43,9 @@ export type Value = string | number | object;
 export interface Values {
   [key: string]: Value;
 }
+export interface Components {
+  [key: string]: React.ReactType;
+}
 export interface ProviderProps {
   locale: string;
   messageByID: { [key: string]: string | undefined };
@@ -59,6 +62,7 @@ export interface ConsumerProps {
 export interface FormattedMessageProps {
   id: string;
   values?: Values;
+  components?: Components;
 }
 export interface DateTimeFormatOptions {
   hour12?: boolean;
@@ -79,7 +83,8 @@ export function parse(source: string): Token[];
 export function evaluate(
   tokens: Token[],
   locale: string,
-  values?: Values
+  values: Values,
+  components: Components
 ): Value[];
 export class Provider extends React.Component<ProviderProps> {}
 export class Consumer extends React.Component<ConsumerProps> {}

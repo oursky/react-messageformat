@@ -45,6 +45,13 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-is@^16.0.0":
+  version "16.5.0"
+  resolved "https://registry.yarnpkg.com/@types/react-is/-/react-is-16.5.0.tgz#6b0dd43e60fa7c82b48faf7b487543079a61015a"
+  integrity sha512-yUYPioB2Sh5d4csgpW/vJwxWM0RG1/QbGiwYap2m/bEAQKRwbagYRc5C7oK2AM9QC2vr2ZViCgpm0DpDpFQ6XA==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-test-renderer@^16.0.0":
   version "16.0.2"
   resolved "https://registry.yarnpkg.com/@types/react-test-renderer/-/react-test-renderer-16.0.2.tgz#2715eae40df08f80b3620c498598c8615693b6c6"
@@ -2868,6 +2875,11 @@ rc@^1.2.7:
     ini "~1.3.0"
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
+
+react-is@^16.3.0:
+  version "16.5.2"
+  resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.5.2.tgz#e2a7b7c3f5d48062eb769fcb123505eb928722e3"
+  integrity sha512-hSl7E6l25GTjNEZATqZIuWOgSnpXb3kD0DVCujmg46K5zLxsbiKaaT6VO9slkSBDPZfYs30lwfJwbOFOnoEnKQ==
 
 react-is@^16.5.0:
   version "16.5.0"
