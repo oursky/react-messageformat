@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Token } from "messageformat-parser";
+import { Token } from "@louischan-oursky/messageformat-parser";
 import { parse } from "./parse";
 import { Values, evaluate } from "./eval";
 

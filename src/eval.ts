@@ -6,7 +6,7 @@ import {
   Plural,
   SelectOrdinal,
   PluralCase,
-} from "messageformat-parser";
+} from "@louischan-oursky/messageformat-parser";
 import * as makePlural_ from "make-plural";
 import { PluralFunc, PluralByLocale } from "make-plural";
 
