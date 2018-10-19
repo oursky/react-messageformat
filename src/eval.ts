@@ -1,24 +1,54 @@
 import {
   Token,
   TokenOrOctothorpe,
+  React as ReactDirective,
   Select,
   SelectCase,
   Plural,
   SelectOrdinal,
   PluralCase,
-} from "messageformat-parser";
+} from "@louischan-oursky/messageformat-parser";
+import * as React from "react";
 import * as makePlural_ from "make-plural";
 import { PluralFunc, PluralByLocale } from "make-plural";
 
 const makePlural: PluralByLocale = makePlural_;
 
-export type Value = string | number | object;
-export type OutputValue = string | object;
+export type Value = string | number | ReactValue | object;
+export type OutputValue = string | React.ReactElement<any> | object;
 
-type InternalValue = Value | Value[];
+interface ReactValue {
+  __kind: "react";
+  type: React.ReactType;
+  props: { [key: string]: Value[] };
+}
+
+interface ReactInternalValue {
+  __kind: "react";
+  type: React.ReactType;
+  props: { [key: string]: InternalValue[] };
+}
+
+type InternalValue = Value | Value[] | ReactInternalValue;
 
 export interface Values {
   [key: string]: Value;
+}
+
+export interface Components {
+  [key: string]: React.ReactType;
+}
+
+function getComponent(key: string, components: Components): React.ReactType {
+  const c = components[key];
+  if (c != null) {
+    return c;
+  }
+  const firstChar = key.slice(0, 1);
+  if (firstChar.toLowerCase() === firstChar) {
+    return key;
+  }
+  throw new Error(`expected component "${key}" to exist`);
 }
 
 function getValue(key: string, values?: Values): Value {
@@ -46,6 +76,33 @@ function getString(key: string, values?: Values): string {
     throw new Error(`expected "${key}" to be a string`);
   }
   return value;
+}
+
+function evaluateReactDirective(
+  reactDirective: ReactDirective,
+  locale: string,
+  values: Values,
+  components: Components,
+  currentValue: number | undefined
+): ReactInternalValue {
+  const { arg, props: cases } = reactDirective;
+  const component = getComponent(arg, components);
+  const props: { [key: string]: InternalValue[] } = {};
+  for (const c of cases) {
+    const { key, tokens } = c;
+    props[key] = evaluateToInternalValue(
+      tokens,
+      locale,
+      values,
+      components,
+      currentValue
+    );
+  }
+  return {
+    __kind: "react",
+    type: component,
+    props,
+  };
 }
 
 function resolveSelectCase(select: Select, values?: Values): SelectCase {
@@ -132,7 +189,8 @@ function resolvePluralCase(
 function evaluateToInternalValue(
   tokens: TokenOrOctothorpe[],
   locale: string,
-  values: Values | undefined,
+  values: Values,
+  components: Components,
   currentValue: number | undefined
 ): InternalValue[] {
   const output = [];
@@ -152,6 +210,7 @@ function evaluateToInternalValue(
             result.pluralCase.tokens,
             locale,
             values,
+            components,
             result.currentValue
           );
           output.push(nestedTokens);
@@ -163,9 +222,21 @@ function evaluateToInternalValue(
             result.pluralCase.tokens,
             locale,
             values,
+            components,
             result.currentValue
           );
           output.push(nestedTokens);
+          break;
+        }
+        case "react": {
+          const result = evaluateReactDirective(
+            token,
+            locale,
+            values,
+            components,
+            currentValue
+          );
+          output.push(result);
           break;
         }
         case "select": {
@@ -174,6 +245,7 @@ function evaluateToInternalValue(
             selectCase.tokens,
             locale,
             values,
+            components,
             currentValue
           );
           output.push(nestedTokens);
@@ -196,11 +268,35 @@ function evaluateToInternalValue(
   return output;
 }
 
-function toValues(intervalValues: InternalValue[]): Value[] {
+function isReactInternalValue(v: InternalValue): v is ReactInternalValue {
+  return (
+    typeof v === "object" &&
+    v.hasOwnProperty("__kind") &&
+    (v as any).__kind === "react"
+  );
+}
+
+function isReactValue(v: Value): v is ReactValue {
+  return (
+    typeof v === "object" &&
+    v.hasOwnProperty("__kind") &&
+    (v as any).__kind === "react"
+  );
+}
+
+function flatten(intervalValues: InternalValue[]): Value[] {
   const output = [];
   for (const v of intervalValues) {
     if (Array.isArray(v)) {
-      output.push(...toValues(v));
+      output.push(...flatten(v));
+    } else if (isReactInternalValue(v)) {
+      const { props } = v;
+      for (const key in props) {
+        if (props.hasOwnProperty(key)) {
+          props[key] = flatten(props[key]);
+        }
+      }
+      output.push(v);
     } else {
       output.push(v);
     }
@@ -208,11 +304,48 @@ function toValues(intervalValues: InternalValue[]): Value[] {
   return output;
 }
 
+function collapseValues(values: OutputValue[]): OutputValue[] | string {
+  const possible = values.every(
+    v => typeof v === "string" || typeof v === "number"
+  );
+  if (possible) {
+    return values.map(String).join("");
+  }
+  return values;
+}
+
 function toOutputValues(values: Value[]): OutputValue[] {
   const output = [];
   for (const v of values) {
-    if (typeof v === "number") {
+    if (typeof v === "string") {
+      output.push(v);
+    } else if (typeof v === "number") {
       output.push(String(v));
+    } else if (isReactValue(v)) {
+      const propsExcludingChildren: { [key: string]: Value[] | string } = {};
+      let children: Value[] | string | undefined;
+      const { type: component, props } = v;
+      for (const key in props) {
+        if (props.hasOwnProperty(key)) {
+          const value = collapseValues(toOutputValues(props[key]));
+          if (key === "children") {
+            children = value;
+          } else {
+            propsExcludingChildren[key] = value;
+          }
+        }
+      }
+      if (children == null) {
+        output.push(React.createElement(component, propsExcludingChildren));
+      } else if (typeof children === "string") {
+        output.push(
+          React.createElement(component, propsExcludingChildren, children)
+        );
+      } else {
+        output.push(
+          React.createElement(component, propsExcludingChildren, ...children)
+        );
+      }
     } else {
       output.push(v);
     }
@@ -223,13 +356,15 @@ function toOutputValues(values: Value[]): OutputValue[] {
 export function evaluate(
   tokens: Token[],
   locale: string,
-  values?: Values
+  values: Values,
+  components: Components
 ): Value[] {
   const internalValues = evaluateToInternalValue(
     tokens,
     locale,
     values,
+    components,
     undefined
   );
-  return toOutputValues(toValues(internalValues));
+  return toOutputValues(flatten(internalValues));
 }

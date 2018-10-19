@@ -14,6 +14,7 @@ const messageByID = {
   argument: "I meet {GUEST}",
   plural: "{N, plural, =4{four} one{ichi} other{#}}",
   "react.element": "{ANY} {NESTED} {REACT} {ELEMENT}",
+  react: "This is a {A, react, href{{SCHEME}://{HOST}} children{link}}",
 };
 
 function Shortcut(props: MessageOwnProps) {
@@ -73,7 +74,7 @@ test("plural", () => {
   expect(tree).toMatchSnapshot();
 });
 
-test("react.element", () => {
+test("React Element as value", () => {
   const tree = renderer
     .create(
       <Provider locale={locale} messageByID={messageByID}>
@@ -98,6 +99,26 @@ test("react.element", () => {
                 }}
               />
             ),
+          }}
+        />
+      </Provider>
+    )
+    .toJSON();
+  expect(tree).toMatchSnapshot();
+});
+
+test("Embedded React Element", () => {
+  const tree = renderer
+    .create(
+      <Provider locale={locale} messageByID={messageByID}>
+        <FormattedMessage
+          id="react"
+          components={{
+            A: "a",
+          }}
+          values={{
+            SCHEME: "https",
+            HOST: "www.example.com",
           }}
         />
       </Provider>

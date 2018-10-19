@@ -1,6 +1,30 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Embedded React Element 1`] = `
+Array [
+  "This is a ",
+  <a
+    href="https://www.example.com"
+  >
+    link
+  </a>,
+]
+`;
+
 exports[`FormattedDate 1`] = `"August"`;
+
+exports[`React Element as value 1`] = `
+Array [
+  "Hello world",
+  " ",
+  "AnyComponent",
+  " ",
+  "I meet ",
+  "John",
+  " ",
+  "ichi",
+]
+`;
 
 exports[`argument 1`] = `
 Array [
@@ -18,16 +42,3 @@ exports[`imperative 1`] = `
 exports[`plain.string 1`] = `"Hello world"`;
 
 exports[`plural 1`] = `"four"`;
-
-exports[`react.element 1`] = `
-Array [
-  "Hello world",
-  " ",
-  "AnyComponent",
-  " ",
-  "I meet ",
-  "John",
-  " ",
-  "ichi",
-]
-`;

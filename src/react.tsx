@@ -1,7 +1,11 @@
 import * as React from "react";
-import { Token } from "messageformat-parser";
+import { Token } from "@louischan-oursky/messageformat-parser";
 import { parse } from "./parse";
 import { Values, evaluate } from "./eval";
+
+export interface Components {
+  [key: string]: React.ReactType;
+}
 
 export interface ContextValue {
   locale: string;
@@ -22,6 +26,7 @@ interface ProviderState {
 export interface MessageOwnProps {
   id: string;
   values?: Values;
+  components?: Components;
 }
 
 interface MessageContextProps {
@@ -101,7 +106,7 @@ export class Provider extends React.Component<ProviderProps, ProviderState> {
   renderToString = (id: string, values?: Values) => {
     const { locale } = this.props;
     const tokens = this.compile(id);
-    const result = evaluate(tokens, locale, values);
+    const result = evaluate(tokens, locale, values || {}, {});
     const output = [];
     for (const a of result) {
       if (typeof a !== "string") {
@@ -129,9 +134,9 @@ export class Provider extends React.Component<ProviderProps, ProviderState> {
 }
 
 function Message(props: MessageProps) {
-  const { id, values, locale, compile } = props;
+  const { id, values, components, locale, compile } = props;
   const tokens = compile(id);
-  const result = evaluate(tokens, locale, values);
+  const result = evaluate(tokens, locale, values || {}, components || {});
   const children = [];
   for (let i = 0; i < result.length; ++i) {
     const element = result[i];
@@ -142,11 +147,7 @@ function Message(props: MessageProps) {
 
 export class FormattedMessage extends React.Component<MessageOwnProps> {
   renderMessage = (contextValue: ContextValue) => {
-    const { id, values } = this.props;
-    const { locale, compile } = contextValue;
-    return (
-      <Message id={id} values={values} locale={locale} compile={compile} />
-    );
+    return <Message {...this.props} {...contextValue} />;
   };
 
   render() {
