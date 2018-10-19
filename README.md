@@ -1,5 +1,59 @@
 # react-messageformat
 
+## Installation
+
+```sh
+$ npm install --save @oursky/react-messageformat
+$ yarn add @oursky/react-messageformat
+```
+
+This library assumes the presence of `Intl`.
+
+You must apply your own polyfill in your application.
+
+You must apply your own polyfill in your application.
+
+You must apply your own polyfill in your application.
+
+We have to say three times because it is so important.
+
+## Usage
+
+```typescript
+import * as React from "react";
+import * as ReactDOM from "react-dom";
+import { Provider, FormattedMessage } from "@oursky/react-messageformat";
+
+const MESSAGES = {
+  "my.message": "Hello World",
+};
+
+function Page() {
+  return (
+    <FormattedMessage id="my.message" />
+  );
+}
+
+function App() {
+  return (
+    <Provider locale="en" messageByID={MESSAGES}>
+      <Page />
+    </Provider>
+  );
+}
+
+ReactDOM.render(<App />, document.getElementById("root"));
+```
+
+## Features
+
+- Simple argument `{ARG}`
+- Select `{GENDER, select, male{He} female{She} other{They}}`
+- Ordinal `{ORD, selectordinal, one{#st} two{#nd} few{#rd} other{#th}}`
+- Plural `{NUM, plural, one{1 apple} other{# apples}}`
+- React Element `{a, react, href{http://www.example.com} children{a link}}`
+- Supported values are `string`, `number` and React Element.
+
 ## What is this
 
 This library is a replacement of [react-intl](https://github.com/yahoo/react-intl)
@@ -45,48 +99,3 @@ console.log("react-messageformat", b);
 ```
 
 - We write the evaluation function ourselves. The evaluation function evaluates the AST to an array, which is a first class React element. So we support nesting any react element. react-intl uses a [hack](https://github.com/yahoo/react-intl/blob/v2.6.0/src/components/message.js#L136) to support nesting react element.
-
-## Installation
-
-```sh
-$ npm install --save @oursky/react-messageformat
-$ yarn add @oursky/react-messageformat
-```
-
-This library assumes the presence of `Intl`.
-
-You must apply your own polyfill in your application.
-
-You must apply your own polyfill in your application.
-
-You must apply your own polyfill in your application.
-
-We have to say three times because it is so important.
-
-## Usage
-
-```typescript
-import * as React from "react";
-import * as ReactDOM from "react-dom";
-import { Provider, FormattedMessage } from "@oursky/react-messageformat";
-
-const MESSAGES = {
-  "my.message": "Hello World",
-};
-
-function Page() {
-  return (
-    <FormattedMessage id="my.message" />
-  );
-}
-
-function App() {
-  return (
-    <Provider locale="en" messageByID={MESSAGES}>
-      <Page />
-    </Provider>
-  );
-}
-
-ReactDOM.render(<App />, document.getElementById("root"));
-```
