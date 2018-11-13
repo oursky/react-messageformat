@@ -304,12 +304,14 @@ function flatten(intervalValues: InternalValue[]): Value[] {
   return output;
 }
 
-function collapseValues(values: OutputValue[]): OutputValue[] | string {
-  const possible = values.every(
-    v => typeof v === "string" || typeof v === "number"
-  );
-  if (possible) {
+function collapseValues(values: OutputValue[]): OutputValue[] | OutputValue {
+  const shouldCollapseToString = values.every(v => typeof v === "string");
+  if (shouldCollapseToString) {
     return values.map(String).join("");
+  }
+  const shouldCollapseToSingleValue = values.length === 1;
+  if (shouldCollapseToSingleValue) {
+    return values[0];
   }
   return values;
 }
@@ -322,8 +324,10 @@ function toOutputValues(values: Value[]): OutputValue[] {
     } else if (typeof v === "number") {
       output.push(String(v));
     } else if (isReactValue(v)) {
-      const propsExcludingChildren: { [key: string]: Value[] | string } = {};
-      let children: Value[] | string | undefined;
+      const propsExcludingChildren: {
+        [key: string]: OutputValue[] | OutputValue;
+      } = {};
+      let children: OutputValue[] | OutputValue | undefined;
       const { type: component, props } = v;
       for (const key in props) {
         if (props.hasOwnProperty(key)) {
@@ -337,13 +341,13 @@ function toOutputValues(values: Value[]): OutputValue[] {
       }
       if (children == null) {
         output.push(React.createElement(component, propsExcludingChildren));
-      } else if (typeof children === "string") {
+      } else if (Array.isArray(children)) {
         output.push(
-          React.createElement(component, propsExcludingChildren, children)
+          React.createElement(component, propsExcludingChildren, ...children)
         );
       } else {
         output.push(
-          React.createElement(component, propsExcludingChildren, ...children)
+          React.createElement(component, propsExcludingChildren, children)
         );
       }
     } else {

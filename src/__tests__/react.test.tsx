@@ -15,6 +15,7 @@ const messageByID = {
   plural: "{N, plural, =4{four} one{ichi} other{#}}",
   "react.element": "{ANY} {NESTED} {REACT} {ELEMENT}",
   react: "This is a {A, react, href{{SCHEME}://{HOST}} children{link}}",
+  "react.nonstring": "This is a {A, react, href{{href}}}",
 };
 
 function Shortcut(props: MessageOwnProps) {
@@ -119,6 +120,28 @@ test("Embedded React Element", () => {
           values={{
             SCHEME: "https",
             HOST: "www.example.com",
+          }}
+        />
+      </Provider>
+    )
+    .toJSON();
+  expect(tree).toMatchSnapshot();
+});
+
+test("Embedded React Element with non-string value", () => {
+  const tree = renderer
+    .create(
+      <Provider locale={locale} messageByID={messageByID}>
+        <FormattedMessage
+          id="react.nonstring"
+          components={{
+            A: "a",
+          }}
+          values={{
+            href: {
+              valueOf: () => "https://reactjs.org",
+              toString: () => "https://reactjs.org",
+            },
           }}
         />
       </Provider>

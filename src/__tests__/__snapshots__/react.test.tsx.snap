@@ -11,6 +11,20 @@ Array [
 ]
 `;
 
+exports[`Embedded React Element with non-string value 1`] = `
+Array [
+  "This is a ",
+  <a
+    href={
+      Object {
+        "toString": [Function],
+        "valueOf": [Function],
+      }
+    }
+  />,
+]
+`;
+
 exports[`FormattedDate 1`] = `"August"`;
 
 exports[`React Element as value 1`] = `
