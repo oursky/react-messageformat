@@ -98,12 +98,18 @@ export class LocaleProvider extends React.Component<
     if (source == null) {
       throw new Error(`expected "${id}" to exist`);
     }
-    const tokens = parse(source);
-    this.tokensByID = {
-      ...this.tokensByID,
-      [id]: tokens,
-    };
-    return tokens;
+    try {
+      const tokens = parse(source);
+      this.tokensByID = {
+        ...this.tokensByID,
+        [id]: tokens,
+      };
+      return tokens;
+    } catch (e) {
+      const message = e.message;
+      e.message = `"${id}": ${message}`;
+      throw e;
+    }
   };
 
   renderToString = (id: string, values?: Values) => {
