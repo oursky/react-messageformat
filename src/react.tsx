@@ -63,13 +63,16 @@ const defaultValue: ContextValue = {
   compile: () => [],
   renderToString: () => "",
 };
-const { Provider: Provider_, Consumer } = React.createContext<ContextValue>(
-  defaultValue
-);
+const Context = React.createContext<ContextValue>(defaultValue);
+const { Provider, Consumer } = Context;
 
+export { Context };
 export { Consumer };
 
-export class Provider extends React.Component<ProviderProps, ProviderState> {
+export class LocaleProvider extends React.Component<
+  ProviderProps,
+  ProviderState
+> {
   tokensByID: { [key: string]: Token[] | undefined } = {};
   state = {
     version: 0,
@@ -120,7 +123,7 @@ export class Provider extends React.Component<ProviderProps, ProviderState> {
   render() {
     const { locale, children } = this.props;
     return (
-      <Provider_
+      <Provider
         value={{
           locale,
           compile: this.compile,
@@ -128,7 +131,7 @@ export class Provider extends React.Component<ProviderProps, ProviderState> {
         }}
       >
         {children}
-      </Provider_>
+      </Provider>
     );
   }
 }

@@ -22,7 +22,7 @@ We have to say three times because it is so important.
 ```typescript
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { Provider, FormattedMessage } from "@oursky/react-messageformat";
+import { LocaleProvider, FormattedMessage } from "@oursky/react-messageformat";
 
 const MESSAGES = {
   "my.message": "Hello World",
@@ -36,9 +36,9 @@ function Page() {
 
 function App() {
   return (
-    <Provider locale="en" messageByID={MESSAGES}>
+    <LocaleProvider locale="en" messageByID={MESSAGES}>
       <Page />
-    </Provider>
+    </LocaleProvider>
   );
 }
 
@@ -86,7 +86,7 @@ console.log("react-intl", a);
 
 const b = ReactDOMServer.renderToString(
   React.createElement(
-    ReactMessageFormat.Provider,
+    ReactMessageFormat.LocaleProvider,
     { locale: "en", messageByID: { a: "{A, select, true{} other{}}" } },
     React.createElement(ReactMessageFormat.FormattedMessage, {
       id: "a",

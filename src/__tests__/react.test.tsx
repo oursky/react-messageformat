@@ -1,10 +1,10 @@
 import * as React from "react";
 import * as renderer from "react-test-renderer";
 import {
-  Provider,
+  LocaleProvider,
+  Context,
   FormattedMessage,
   FormattedDate,
-  Consumer,
   MessageOwnProps,
 } from "../react";
 
@@ -20,19 +20,19 @@ const messageByID = {
 
 function Shortcut(props: MessageOwnProps) {
   return (
-    <Provider locale={locale} messageByID={messageByID}>
+    <LocaleProvider locale={locale} messageByID={messageByID}>
       <FormattedMessage {...props} />
-    </Provider>
+    </LocaleProvider>
   );
 }
 
 function Input(props: MessageOwnProps) {
   return (
-    <Consumer>
+    <Context.Consumer>
       {({ renderToString }) => {
         return <input placeholder={renderToString(props.id, props.values)} />;
       }}
-    </Consumer>
+    </Context.Consumer>
   );
 }
 
@@ -78,7 +78,7 @@ test("plural", () => {
 test("React Element as value", () => {
   const tree = renderer
     .create(
-      <Provider locale={locale} messageByID={messageByID}>
+      <LocaleProvider locale={locale} messageByID={messageByID}>
         <FormattedMessage
           id="react.element"
           values={{
@@ -102,7 +102,7 @@ test("React Element as value", () => {
             ),
           }}
         />
-      </Provider>
+      </LocaleProvider>
     )
     .toJSON();
   expect(tree).toMatchSnapshot();
@@ -111,7 +111,7 @@ test("React Element as value", () => {
 test("Embedded React Element", () => {
   const tree = renderer
     .create(
-      <Provider locale={locale} messageByID={messageByID}>
+      <LocaleProvider locale={locale} messageByID={messageByID}>
         <FormattedMessage
           id="react"
           components={{
@@ -122,7 +122,7 @@ test("Embedded React Element", () => {
             HOST: "www.example.com",
           }}
         />
-      </Provider>
+      </LocaleProvider>
     )
     .toJSON();
   expect(tree).toMatchSnapshot();
@@ -131,7 +131,7 @@ test("Embedded React Element", () => {
 test("Embedded React Element with non-string value", () => {
   const tree = renderer
     .create(
-      <Provider locale={locale} messageByID={messageByID}>
+      <LocaleProvider locale={locale} messageByID={messageByID}>
         <FormattedMessage
           id="react.nonstring"
           components={{
@@ -144,7 +144,7 @@ test("Embedded React Element with non-string value", () => {
             },
           }}
         />
-      </Provider>
+      </LocaleProvider>
     )
     .toJSON();
   expect(tree).toMatchSnapshot();
@@ -153,9 +153,9 @@ test("Embedded React Element with non-string value", () => {
 test("imperative", () => {
   const tree = renderer
     .create(
-      <Provider locale={locale} messageByID={messageByID}>
+      <LocaleProvider locale={locale} messageByID={messageByID}>
         <Input id="plain.string" />
-      </Provider>
+      </LocaleProvider>
     )
     .toJSON();
   expect(tree).toMatchSnapshot();
@@ -164,9 +164,9 @@ test("imperative", () => {
 test("FormattedDate", () => {
   const tree = renderer
     .create(
-      <Provider locale={locale} messageByID={messageByID}>
+      <LocaleProvider locale={locale} messageByID={messageByID}>
         <FormattedDate value={new Date("2018-08-08")} month="long" />
-      </Provider>
+      </LocaleProvider>
     )
     .toJSON();
   expect(tree).toMatchSnapshot();

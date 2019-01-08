@@ -46,7 +46,7 @@ export interface Values {
 export interface Components {
   [key: string]: React.ReactType;
 }
-export interface ProviderProps {
+export interface LocaleProviderProps {
   locale: string;
   messageByID: { [key: string]: string | undefined };
   children?: React.ReactNode;
@@ -86,7 +86,8 @@ export function evaluate(
   values: Values,
   components: Components
 ): Value[];
-export class Provider extends React.Component<ProviderProps> {}
+export const Context: React.Context<ContextValue>;
+export class LocaleProvider extends React.Component<LocaleProviderProps> {}
 export class Consumer extends React.Component<ConsumerProps> {}
 export class FormattedMessage extends React.Component<FormattedMessageProps> {}
 export class FormattedDate extends React.Component<FormattedDateProps> {}
