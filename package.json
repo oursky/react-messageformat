@@ -4,7 +4,9 @@
   "license": "Apache-2.0",
   "main": "index.js",
   "scripts": {
+    "prepublish": "yarn run typecheck && yarn run format && yarn run test && yarn run build",
     "format": "prettier --write --list-different '*.config.js' 'src/**/*.{js,jsx,ts,tsx}'",
+    "prebuild": "rm -rf ./dist",
     "build": "rollup -c",
     "typecheck": "tsc --noEmit",
     "test": "jest"
