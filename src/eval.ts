@@ -46,7 +46,8 @@ function getComponent(key: string, components: Components): React.ReactType {
   }
   const firstChar = key.slice(0, 1);
   if (firstChar.toLowerCase() === firstChar) {
-    return key;
+    // Assume it is HTML tag name.
+    return key as any;
   }
   throw new Error(`expected component "${key}" to exist`);
 }
