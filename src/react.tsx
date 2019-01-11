@@ -113,17 +113,24 @@ export class LocaleProvider extends React.Component<
   };
 
   renderToString = (id: string, values?: Values) => {
-    const { locale } = this.props;
-    const tokens = this.compile(id);
-    const result = evaluate(tokens, locale, values || {}, {});
-    const output = [];
-    for (const a of result) {
-      if (typeof a !== "string") {
-        throw new Error(`unexpected non-string value "${id}"`);
+    try {
+      const { locale } = this.props;
+      const tokens = this.compile(id);
+      const result = evaluate(tokens, locale, values || {}, {});
+      const output = [];
+      for (const a of result) {
+        if (typeof a !== "string") {
+          throw new Error(`unexpected non-string value "${id}"`);
+        }
+        output.push(a);
       }
-      output.push(a);
+      return output.join("");
+    } catch (e) {
+      if (process.env.NODE_ENV === "production") {
+        return "";
+      }
+      throw e;
     }
-    return output.join("");
   };
 
   render() {
@@ -143,15 +150,22 @@ export class LocaleProvider extends React.Component<
 }
 
 function Message(props: MessageProps) {
-  const { id, values, components, locale, compile } = props;
-  const tokens = compile(id);
-  const result = evaluate(tokens, locale, values || {}, components || {});
-  const children = [];
-  for (let i = 0; i < result.length; ++i) {
-    const element = result[i];
-    children.push(<React.Fragment key={i}>{element}</React.Fragment>);
+  try {
+    const { id, values, components, locale, compile } = props;
+    const tokens = compile(id);
+    const result = evaluate(tokens, locale, values || {}, components || {});
+    const children = [];
+    for (let i = 0; i < result.length; ++i) {
+      const element = result[i];
+      children.push(<React.Fragment key={i}>{element}</React.Fragment>);
+    }
+    return <>{children}</>;
+  } catch (e) {
+    if (process.env.NODE_ENV === "production") {
+      return ("" as any) as React.ReactElement<any>;
+    }
+    throw e;
   }
-  return <>{children}</>;
 }
 
 export class FormattedMessage extends React.Component<MessageOwnProps> {
