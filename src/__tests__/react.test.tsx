@@ -4,7 +4,6 @@ import {
   LocaleProvider,
   Context,
   FormattedMessage,
-  FormattedDate,
   MessageOwnProps,
 } from "../react";
 
@@ -155,17 +154,6 @@ test("imperative", () => {
     .create(
       <LocaleProvider locale={locale} messageByID={messageByID}>
         <Input id="plain.string" />
-      </LocaleProvider>
-    )
-    .toJSON();
-  expect(tree).toMatchSnapshot();
-});
-
-test("FormattedDate", () => {
-  const tree = renderer
-    .create(
-      <LocaleProvider locale={locale} messageByID={messageByID}>
-        <FormattedDate value={new Date("2018-08-08")} month="long" />
       </LocaleProvider>
     )
     .toJSON();

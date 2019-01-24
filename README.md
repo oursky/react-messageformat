@@ -7,24 +7,6 @@ $ npm install --save @oursky/react-messageformat
 $ yarn add @oursky/react-messageformat
 ```
 
-This library assumes the presence of `Intl`.
-
-You must apply your own polyfill in your application.
-
-You must apply your own polyfill in your application.
-
-You must apply your own polyfill in your application.
-
-In case you use this library in a React Native project,
-
-You must [upgrade JSC with International variant](https://github.com/react-native-community/jsc-android-buildscripts#how-to-use-it-with-my-react-native-app).
-
-You must [upgrade JSC with International variant](https://github.com/react-native-community/jsc-android-buildscripts#how-to-use-it-with-my-react-native-app).
-
-You must [upgrade JSC with International variant](https://github.com/react-native-community/jsc-android-buildscripts#how-to-use-it-with-my-react-native-app).
-
-We have to say three times because it is so important.
-
 ## Usage
 
 ```typescript
