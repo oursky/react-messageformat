@@ -53,6 +53,7 @@ export interface LocaleProviderProps {
 }
 export interface ContextValue {
   locale: string;
+  language: string;
   compile: (id: string) => Token[];
   renderToString: (id: string, values?: Values) => string;
 }
@@ -68,7 +69,7 @@ export interface FormattedMessageProps {
 export function parse(source: string): Token[];
 export function evaluate(
   tokens: Token[],
-  locale: string,
+  language: string,
   values: Values,
   components: Components
 ): Value[];

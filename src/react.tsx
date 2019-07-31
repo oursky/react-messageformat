@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Token } from "@louischan-oursky/messageformat-parser";
 import { parse } from "./parse";
+import { localeToLanguage } from "./locale";
 import { Values, evaluate } from "./eval";
 
 export interface Components {
@@ -9,6 +10,7 @@ export interface Components {
 
 export interface ContextValue {
   locale: string;
+  language: string;
   compile: (id: string) => Token[];
   renderToString: (id: string, values?: Values) => string;
 }
@@ -30,7 +32,7 @@ export interface MessageOwnProps {
 }
 
 interface MessageContextProps {
-  locale: string;
+  language: string;
   compile: (id: string) => Token[];
 }
 
@@ -38,6 +40,7 @@ type MessageProps = MessageOwnProps & MessageContextProps;
 
 const defaultValue: ContextValue = {
   locale: "en",
+  language: "en",
   compile: () => [],
   renderToString: () => "",
 };
@@ -94,7 +97,8 @@ export class LocaleProvider extends React.Component<
     try {
       const { locale } = this.props;
       const tokens = this.compile(id);
-      const result = evaluate(tokens, locale, values || {}, {});
+      const language = localeToLanguage(locale);
+      const result = evaluate(tokens, language, values || {}, {});
       const output = [];
       for (const a of result) {
         if (typeof a !== "string") {
@@ -117,6 +121,7 @@ export class LocaleProvider extends React.Component<
       <Provider
         value={{
           locale,
+          language: localeToLanguage(locale),
           compile: this.compile,
           renderToString: this.renderToString,
         }}
@@ -129,9 +134,9 @@ export class LocaleProvider extends React.Component<
 
 function Message(props: MessageProps) {
   try {
-    const { id, values, components, locale, compile } = props;
+    const { id, values, components, language, compile } = props;
     const tokens = compile(id);
-    const result = evaluate(tokens, locale, values || {}, components || {});
+    const result = evaluate(tokens, language, values || {}, components || {});
     const children = [];
     for (let i = 0; i < result.length; ++i) {
       const element = result[i];

@@ -78,7 +78,7 @@ function getString(key: string, values?: Values): string {
 
 function evaluateReactDirective(
   reactDirective: ReactDirective,
-  locale: string,
+  language: string,
   values: Values,
   components: Components,
   currentValue: number | undefined
@@ -90,7 +90,7 @@ function evaluateReactDirective(
     const { key, tokens } = c;
     props[key] = evaluateToInternalValue(
       tokens,
-      locale,
+      language,
       values,
       components,
       currentValue
@@ -126,17 +126,17 @@ function resolveSelectCase(select: Select, values?: Values): SelectCase {
   return cases[otherIndex];
 }
 
-function resolvePluralFunc(locale: string): PluralFunc {
-  const func = pluralFuncByLanguage[locale];
+function resolvePluralFunc(language: string): PluralFunc {
+  const func = pluralFuncByLanguage[language];
   if (func == null) {
-    throw new Error("unsupported locale: " + locale);
+    throw new Error("unsupported language: " + language);
   }
   return func;
 }
 
 function resolvePluralCase(
   pluralOrSelectOrdinal: Plural | SelectOrdinal,
-  locale: string,
+  language: string,
   values?: Values
 ): {
   pluralCase: PluralCase;
@@ -148,7 +148,7 @@ function resolvePluralCase(
     throw new Error("invalid offset");
   }
   const ordinal = type === "selectordinal";
-  const pluralFunc = resolvePluralFunc(locale);
+  const pluralFunc = resolvePluralFunc(language);
   const rawValue = getNumber(arg, values);
   const offsetValue = rawValue - offset;
   const pluralRule = pluralFunc(offsetValue, ordinal);
@@ -186,7 +186,7 @@ function resolvePluralCase(
 
 function evaluateToInternalValue(
   tokens: TokenOrOctothorpe[],
-  locale: string,
+  language: string,
   values: Values,
   components: Components,
   currentValue: number | undefined
@@ -203,10 +203,10 @@ function evaluateToInternalValue(
           break;
         }
         case "plural": {
-          const result = resolvePluralCase(token, locale, values);
+          const result = resolvePluralCase(token, language, values);
           const nestedTokens = evaluateToInternalValue(
             result.pluralCase.tokens,
-            locale,
+            language,
             values,
             components,
             result.currentValue
@@ -215,10 +215,10 @@ function evaluateToInternalValue(
           break;
         }
         case "selectordinal": {
-          const result = resolvePluralCase(token, locale, values);
+          const result = resolvePluralCase(token, language, values);
           const nestedTokens = evaluateToInternalValue(
             result.pluralCase.tokens,
-            locale,
+            language,
             values,
             components,
             result.currentValue
@@ -229,7 +229,7 @@ function evaluateToInternalValue(
         case "react": {
           const result = evaluateReactDirective(
             token,
-            locale,
+            language,
             values,
             components,
             currentValue
@@ -241,7 +241,7 @@ function evaluateToInternalValue(
           const selectCase = resolveSelectCase(token, values);
           const nestedTokens = evaluateToInternalValue(
             selectCase.tokens,
-            locale,
+            language,
             values,
             components,
             currentValue
@@ -357,13 +357,13 @@ function toOutputValues(values: Value[]): OutputValue[] {
 
 export function evaluate(
   tokens: Token[],
-  locale: string,
+  language: string,
   values: Values,
   components: Components
 ): Value[] {
   const internalValues = evaluateToInternalValue(
     tokens,
-    locale,
+    language,
     values,
     components,
     undefined
