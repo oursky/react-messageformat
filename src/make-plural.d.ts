@@ -4,4 +4,6 @@ declare module "make-plural" {
   export interface PluralByLocale {
     [key: string]: undefined | PluralFunc;
   }
+  const pluralByLocal: PluralByLocale;
+  export default pluralByLocal;
 }

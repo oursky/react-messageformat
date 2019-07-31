@@ -9,10 +9,7 @@ import {
   PluralCase,
 } from "@louischan-oursky/messageformat-parser";
 import * as React from "react";
-import * as makePlural_ from "make-plural";
-import { PluralFunc, PluralByLocale } from "make-plural";
-
-const makePlural: PluralByLocale = makePlural_;
+import pluralFuncByLanguage, { PluralFunc } from "make-plural";
 
 export type Value = string | number | ReactValue | object;
 export type OutputValue = string | React.ReactElement<any> | object;
@@ -130,7 +127,7 @@ function resolveSelectCase(select: Select, values?: Values): SelectCase {
 }
 
 function resolvePluralFunc(locale: string): PluralFunc {
-  const func = makePlural[locale];
+  const func = pluralFuncByLanguage[locale];
   if (func == null) {
     throw new Error("unsupported locale: " + locale);
   }
