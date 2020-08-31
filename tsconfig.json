@@ -4,8 +4,6 @@
     "module": "ES2015",
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "downlevelIteration": true,
-    "importHelpers": true,
     "jsx": "React",
     "lib": ["ES5", "DOM", "ES2015.Promise"],
     "strict": true,
