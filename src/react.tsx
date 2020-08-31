@@ -62,7 +62,7 @@ export class LocaleProvider extends React.Component<
   componentDidUpdate(prevProps: ProviderProps) {
     if (this.props.locale !== prevProps.locale) {
       this.tokensByID = {};
-      this.setState(prevState => {
+      this.setState((prevState) => {
         return {
           version: prevState.version + 1,
         };

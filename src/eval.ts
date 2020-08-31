@@ -303,7 +303,7 @@ function flatten(intervalValues: InternalValue[]): Value[] {
 }
 
 function collapseValues(values: OutputValue[]): OutputValue[] | OutputValue {
-  const shouldCollapseToString = values.every(v => typeof v === "string");
+  const shouldCollapseToString = values.every((v) => typeof v === "string");
   if (shouldCollapseToString) {
     return values.map(String).join("");
   }
