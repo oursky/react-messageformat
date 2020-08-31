@@ -159,17 +159,3 @@ test("imperative", () => {
     .toJSON();
   expect(tree).toMatchSnapshot();
 });
-
-test("Suppress any error in production mode", () => {
-  const original = process.env.NODE_ENV;
-  process.env.NODE_ENV = "production";
-  const tree = renderer
-    .create(
-      <LocaleProvider locale={locale} messageByID={messageByID}>
-        <FormattedMessage id="we.do.not.have.this.key" />
-      </LocaleProvider>
-    )
-    .toJSON();
-  expect(tree).toMatchSnapshot();
-  process.env.NODE_ENV = original;
-});

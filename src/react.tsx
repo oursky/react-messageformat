@@ -108,10 +108,8 @@ export class LocaleProvider extends React.Component<
       }
       return output.join("");
     } catch (e) {
-      if (process.env.NODE_ENV === "production") {
-        return "";
-      }
-      throw e;
+      console.warn(e);
+      return "";
     }
   };
 
@@ -144,10 +142,8 @@ function Message(props: MessageProps) {
     }
     return <>{children}</>;
   } catch (e) {
-    if (process.env.NODE_ENV === "production") {
-      return ("" as any) as React.ReactElement<any>;
-    }
-    throw e;
+    console.warn(e);
+    return ("" as any) as React.ReactElement<any>;
   }
 }
 

@@ -1,7 +1,6 @@
 import babel from "@rollup/plugin-babel";
 import commonjs from "@rollup/plugin-commonjs";
 import json from "@rollup/plugin-json";
-import replace from "@rollup/plugin-replace";
 import resolve from "@rollup/plugin-node-resolve";
 import pkg from "./package.json";
 
@@ -37,24 +36,23 @@ const plugins = [
   }),
 ];
 
-function makeConfig(env) {
-  return {
+export default [
+  {
     input: "src/index.ts",
     external,
-    plugins: [
-      replace({
-        values: {
-          "process.env.NODE_ENV": JSON.stringify(env),
-        },
-      }),
-      ...plugins,
-    ],
+    plugins,
     output: {
       format: "cjs",
-      file: `dist/index.${env}.cjs.js`,
-      interop: true,
+      file: "dist/index.cjs.js",
     },
-  };
-}
-
-export default [makeConfig("development"), makeConfig("production")];
+  },
+  {
+    input: "src/index.ts",
+    external,
+    plugins,
+    output: {
+      format: "esm",
+      file: "dist/index.module.js",
+    },
+  },
+];

@@ -38,8 +38,6 @@ Array [
 ]
 `;
 
-exports[`Suppress any error in production mode 1`] = `""`;
-
 exports[`argument 1`] = `
 Array [
   "I meet ",
