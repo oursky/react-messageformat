@@ -12,15 +12,26 @@ $ yarn add @oursky/react-messageformat
 ```typescript
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { LocaleProvider, FormattedMessage } from "@oursky/react-messageformat";
+import { LocaleProvider, FormattedMessage, useMessageFormat } from "@oursky/react-messageformat";
 
 const MESSAGES = {
   "my.message": "Hello World",
+  "delete_account.placeholder": "Please enter `{NAME}` to delete acount",
 };
 
 function Page() {
+  const messageFormat = useMessageFormat();
+
+  const placeholder = messageFormat.renderToString(
+    'delete_account.placeholder',
+    { NAME: 'nobody' }
+  );
+
   return (
-    <FormattedMessage id="my.message" />
+    <div>
+      <FormattedMessage id="my.message" />
+      <input placeholder={placeholder} />
+    </div>
   );
 }
 

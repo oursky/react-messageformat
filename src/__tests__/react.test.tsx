@@ -5,6 +5,7 @@ import {
   Context,
   FormattedMessage,
   MessageOwnProps,
+  useMessageFormat,
 } from "../react";
 
 const locale = "en";
@@ -33,6 +34,18 @@ function Input(props: MessageOwnProps) {
       }}
     </Context.Consumer>
   );
+}
+
+function UseMessageFormatPlainString(props: MessageOwnProps) {
+  const messageFormat = useMessageFormat();
+
+  return <input value={messageFormat.renderToString(props.id, props.values)} />;
+}
+
+function UseMessageFormatEmbedded(props: MessageOwnProps) {
+  const messageFormat = useMessageFormat();
+
+  return messageFormat.compile(props.id, props.values, props.components);
 }
 
 class AnyComponent extends React.Component {
@@ -154,6 +167,60 @@ test("imperative", () => {
     .create(
       <LocaleProvider locale={locale} messageByID={messageByID}>
         <Input id="plain.string" />
+      </LocaleProvider>
+    )
+    .toJSON();
+  expect(tree).toMatchSnapshot();
+});
+
+test("Hook with plain string", () => {
+  const tree = renderer
+    .create(
+      <LocaleProvider locale={locale} messageByID={messageByID}>
+        <UseMessageFormatPlainString id="plain.string" />
+      </LocaleProvider>
+    )
+    .toJSON();
+  expect(tree).toMatchSnapshot();
+});
+
+test("Hook with React Element", () => {
+  const tree = renderer
+    .create(
+      <LocaleProvider locale={locale} messageByID={messageByID}>
+        <UseMessageFormatEmbedded
+          id="react.element"
+          values={{
+            ANY: <FormattedMessage id="plain.string" />,
+            NESTED: <AnyComponent />,
+            REACT: (
+              <FormattedMessage
+                id="argument"
+                values={{
+                  GUEST: "John",
+                }}
+              />
+            ),
+            ELEMENT: (
+              <FormattedMessage
+                id="plural"
+                values={{
+                  N: 1,
+                }}
+              />
+            ),
+          }}
+        />
+        <UseMessageFormatEmbedded
+          id="react"
+          components={{
+            A: "a",
+          }}
+          values={{
+            SCHEME: "https",
+            HOST: "www.example.com",
+          }}
+        />
       </LocaleProvider>
     )
     .toJSON();

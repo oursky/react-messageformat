@@ -25,6 +25,31 @@ Array [
 ]
 `;
 
+exports[`Hook with React Element 1`] = `
+Array [
+  "Hello world",
+  " ",
+  "AnyComponent",
+  " ",
+  "I meet ",
+  "John",
+  " ",
+  "ichi",
+  "This is a ",
+  <a
+    href="https://www.example.com"
+  >
+    link
+  </a>,
+]
+`;
+
+exports[`Hook with plain string 1`] = `
+<input
+  value="Hello world"
+/>
+`;
+
 exports[`React Element as value 1`] = `
 Array [
   "Hello world",

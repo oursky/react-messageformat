@@ -156,3 +156,34 @@ export class FormattedMessage extends React.Component<MessageOwnProps> {
     return <Consumer>{this.renderMessage}</Consumer>;
   }
 }
+
+export function useMessageFormat(props: Omit<MessageOwnProps, "id"> = {}) {
+  const { useState, useContext, useCallback } = React;
+
+  if (!useState) {
+    throw new Error("At least react@16.7 is required to use useMessageFormat");
+  }
+
+  const context = useContext(Context);
+
+  const compile = useCallback(
+    (
+      id: MessageOwnProps["id"],
+      values?: MessageOwnProps["values"],
+      components?: MessageOwnProps["components"]
+    ) => (
+      <FormattedMessage
+        {...props}
+        id={id}
+        values={values || props.values}
+        components={components || props.components}
+      />
+    ),
+    [props, context]
+  );
+
+  return {
+    ...context,
+    compile,
+  };
+}

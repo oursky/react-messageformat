@@ -77,3 +77,10 @@ export const Context: React.Context<ContextValue>;
 export class LocaleProvider extends React.Component<LocaleProviderProps> {}
 export class Consumer extends React.Component<ConsumerProps> {}
 export class FormattedMessage extends React.Component<FormattedMessageProps> {}
+export function useMessageFormat(props?: Omit<FormattedMessageProps, "id">): ContextValue & {
+  compile: (
+    id: string,
+    values?: Values,
+    components?: Components,
+  ) => React.ReactNode;
+};
