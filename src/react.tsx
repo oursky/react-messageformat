@@ -143,7 +143,7 @@ function Message(props: MessageProps) {
     return <>{children}</>;
   } catch (e) {
     console.warn(e);
-    return ("" as any) as React.ReactElement<any>;
+    return "" as any as React.ReactElement<any>;
   }
 }
 
