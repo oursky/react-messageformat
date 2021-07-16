@@ -33,6 +33,7 @@ const plugins = [
   babel({
     extensions,
     exclude: ["node_modules/**"],
+    babelHelpers: "bundled",
   }),
 ];
 

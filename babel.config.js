@@ -14,7 +14,7 @@ const presetEnvOptions = {
   // During build, rollup handles module for us.
   // During testing, we use plugin-transform-modules-commonjs.
   modules: false,
-  loose: true,
+  loose: false,
   debug: false,
   useBuiltIns: false,
 };
