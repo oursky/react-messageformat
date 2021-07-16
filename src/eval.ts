@@ -9,10 +9,14 @@ import {
   PluralCase,
 } from "@louischan-oursky/messageformat-parser";
 import * as React from "react";
-import pluralFuncByLanguage, { PluralFunc } from "make-plural";
+import * as Plurals from "make-plural/plurals";
 
 export type Value = string | number | ReactValue | object;
 export type OutputValue = string | React.ReactElement<any> | object;
+
+type PluralCategory = "zero" | "one" | "two" | "few" | "many" | "other";
+type PluralFunc = (n: number | string, ord?: boolean) => PluralCategory;
+type PluralFuncByLanguage = Record<string, PluralFunc>;
 
 interface ReactValue {
   __kind: "react";
@@ -127,7 +131,8 @@ function resolveSelectCase(select: Select, values?: Values): SelectCase {
 }
 
 function resolvePluralFunc(language: string): PluralFunc {
-  const func = pluralFuncByLanguage[language];
+  const m: PluralFuncByLanguage = Plurals;
+  const func = m[language];
   if (func == null) {
     throw new Error("unsupported language: " + language);
   }
