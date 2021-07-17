@@ -1,5 +1,5 @@
-import * as React from "react";
-import * as renderer from "react-test-renderer";
+import React, { useContext } from "react";
+import { create } from "react-test-renderer";
 import {
   LocaleProvider,
   Context,
@@ -27,13 +27,9 @@ function Shortcut(props: MessageOwnProps) {
 }
 
 function Input(props: MessageOwnProps) {
-  return (
-    <Context.Consumer>
-      {({ renderToString }) => {
-        return <input placeholder={renderToString(props.id, props.values)} />;
-      }}
-    </Context.Consumer>
-  );
+  const { id, values } = props;
+  const { renderToString } = useContext(Context);
+  return <input placeholder={renderToString(id, values)} />;
 }
 
 class AnyComponent extends React.Component {
@@ -43,169 +39,153 @@ class AnyComponent extends React.Component {
 }
 
 test("plain.string", () => {
-  const tree = renderer.create(<Shortcut id="plain.string" />).toJSON();
+  const tree = create(<Shortcut id="plain.string" />).toJSON();
   expect(tree).toMatchSnapshot();
 });
 
 test("argument", () => {
-  const tree = renderer
-    .create(
-      <Shortcut
-        id="argument"
-        values={{
-          GUEST: "John",
-        }}
-      />
-    )
-    .toJSON();
+  const tree = create(
+    <Shortcut
+      id="argument"
+      values={{
+        GUEST: "John",
+      }}
+    />
+  ).toJSON();
   expect(tree).toMatchSnapshot();
 });
 
 test("plural", () => {
-  const tree = renderer
-    .create(
-      <Shortcut
-        id="plural"
-        values={{
-          N: 4,
-        }}
-      />
-    )
-    .toJSON();
+  const tree = create(
+    <Shortcut
+      id="plural"
+      values={{
+        N: 4,
+      }}
+    />
+  ).toJSON();
   expect(tree).toMatchSnapshot();
 });
 
 test("React Element as value", () => {
-  const tree = renderer
-    .create(
-      <LocaleProvider locale={locale} messageByID={messageByID}>
-        <FormattedMessage
-          id="react.element"
-          values={{
-            ANY: <FormattedMessage id="plain.string" />,
-            NESTED: <AnyComponent />,
-            REACT: (
-              <FormattedMessage
-                id="argument"
-                values={{
-                  GUEST: "John",
-                }}
-              />
-            ),
-            ELEMENT: (
-              <FormattedMessage
-                id="plural"
-                values={{
-                  N: 1,
-                }}
-              />
-            ),
-          }}
-        />
-      </LocaleProvider>
-    )
-    .toJSON();
+  const tree = create(
+    <LocaleProvider locale={locale} messageByID={messageByID}>
+      <FormattedMessage
+        id="react.element"
+        values={{
+          ANY: <FormattedMessage id="plain.string" />,
+          NESTED: <AnyComponent />,
+          REACT: (
+            <FormattedMessage
+              id="argument"
+              values={{
+                GUEST: "John",
+              }}
+            />
+          ),
+          ELEMENT: (
+            <FormattedMessage
+              id="plural"
+              values={{
+                N: 1,
+              }}
+            />
+          ),
+        }}
+      />
+    </LocaleProvider>
+  ).toJSON();
   expect(tree).toMatchSnapshot();
 });
 
 test("Embedded React Element", () => {
-  const tree = renderer
-    .create(
-      <LocaleProvider locale={locale} messageByID={messageByID}>
-        <FormattedMessage
-          id="react"
-          components={{
-            A: "a",
-          }}
-          values={{
-            SCHEME: "https",
-            HOST: "www.example.com",
-          }}
-        />
-      </LocaleProvider>
-    )
-    .toJSON();
+  const tree = create(
+    <LocaleProvider locale={locale} messageByID={messageByID}>
+      <FormattedMessage
+        id="react"
+        components={{
+          A: "a",
+        }}
+        values={{
+          SCHEME: "https",
+          HOST: "www.example.com",
+        }}
+      />
+    </LocaleProvider>
+  ).toJSON();
   expect(tree).toMatchSnapshot();
 });
 
 test("Embedded React Element with non-string value", () => {
-  const tree = renderer
-    .create(
-      <LocaleProvider locale={locale} messageByID={messageByID}>
-        <FormattedMessage
-          id="react.nonstring"
-          components={{
-            A: "a",
-          }}
-          values={{
-            href: {
-              valueOf: () => "https://reactjs.org",
-              toString: () => "https://reactjs.org",
-            },
-          }}
-        />
-      </LocaleProvider>
-    )
-    .toJSON();
+  const tree = create(
+    <LocaleProvider locale={locale} messageByID={messageByID}>
+      <FormattedMessage
+        id="react.nonstring"
+        components={{
+          A: "a",
+        }}
+        values={{
+          href: {
+            valueOf: () => "https://reactjs.org",
+            toString: () => "https://reactjs.org",
+          },
+        }}
+      />
+    </LocaleProvider>
+  ).toJSON();
   expect(tree).toMatchSnapshot();
 });
 
 test("imperative", () => {
-  const tree = renderer
-    .create(
-      <LocaleProvider locale={locale} messageByID={messageByID}>
-        <Input id="plain.string" />
-      </LocaleProvider>
-    )
-    .toJSON();
+  const tree = create(
+    <LocaleProvider locale={locale} messageByID={messageByID}>
+      <Input id="plain.string" />
+    </LocaleProvider>
+  ).toJSON();
   expect(tree).toMatchSnapshot();
 });
 
 test("defaultComponents", () => {
-  const tree = renderer
-    .create(
-      <LocaleProvider
-        locale={locale}
-        messageByID={messageByID}
-        defaultComponents={{
-          A: "a",
+  const tree = create(
+    <LocaleProvider
+      locale={locale}
+      messageByID={messageByID}
+      defaultComponents={{
+        A: "a",
+      }}
+    >
+      <FormattedMessage
+        id="react"
+        values={{
+          SCHEME: "https",
+          HOST: "www.example.com",
         }}
-      >
-        <FormattedMessage
-          id="react"
-          values={{
-            SCHEME: "https",
-            HOST: "www.example.com",
-          }}
-        />
-      </LocaleProvider>
-    )
-    .toJSON();
+      />
+    </LocaleProvider>
+  ).toJSON();
   expect(tree).toMatchSnapshot();
 });
 
 test("components override defaultComponents", () => {
-  const tree = renderer
-    .create(
-      <LocaleProvider
-        locale={locale}
-        messageByID={messageByID}
-        defaultComponents={{
-          A: "a",
+  const tree = create(
+    <LocaleProvider
+      locale={locale}
+      messageByID={messageByID}
+      defaultComponents={{
+        A: "a",
+      }}
+    >
+      <FormattedMessage
+        id="react"
+        components={{
+          A: "span",
         }}
-      >
-        <FormattedMessage
-          id="react"
-          components={{
-            A: "span",
-          }}
-          values={{
-            SCHEME: "https",
-            HOST: "www.example.com",
-          }}
-        />
-      </LocaleProvider>
-    )
-    .toJSON();
+        values={{
+          SCHEME: "https",
+          HOST: "www.example.com",
+        }}
+      />
+    </LocaleProvider>
+  ).toJSON();
   expect(tree).toMatchSnapshot();
 });

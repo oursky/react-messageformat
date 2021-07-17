@@ -1,4 +1,4 @@
-import * as ReactIs from "react-is";
+import { isElement } from "react-is";
 import { parse, evaluate } from "../index";
 
 test("plain string", () => {
@@ -127,7 +127,7 @@ describe("react", () => {
     const result = evaluate(tokens, "en", {}, {});
     expect(result.length).toBe(3);
     const e = result[1];
-    expect(ReactIs.isElement(e)).toBe(true);
+    expect(isElement(e)).toBe(true);
     expect((e as any).props.children).toEqual("link");
     expect((e as any).props.href).toEqual("http://www.example.com");
   });
@@ -143,7 +143,7 @@ describe("react", () => {
     );
     expect(result.length).toBe(3);
     const e = result[1];
-    expect(ReactIs.isElement(e)).toBe(true);
+    expect(isElement(e)).toBe(true);
     expect((e as any).props.children).toEqual("link");
     expect((e as any).props.href).toEqual("http://www.example.com");
   });
@@ -159,7 +159,7 @@ describe("react", () => {
     );
     expect(result.length).toBe(3);
     const e = result[1];
-    expect(ReactIs.isElement(e)).toBe(true);
+    expect(isElement(e)).toBe(true);
     expect((e as any).props.children).toEqual("link");
     expect((e as any).props.href).toEqual("https://www.example.com");
   });
@@ -170,11 +170,11 @@ describe("react", () => {
     const result = evaluate(tokens, "en", {}, {});
     expect(result.length).toBe(3);
     const a = result[1];
-    expect(ReactIs.isElement(a)).toBe(true);
+    expect(isElement(a)).toBe(true);
     expect((a as any).props.href).toEqual("http://www.example.com");
-    expect(ReactIs.isElement((a as any).props.children)).toBe(true);
+    expect(isElement((a as any).props.children)).toBe(true);
     const b = (a as any).props.children;
-    expect(ReactIs.isElement(b)).toBe(true);
+    expect(isElement(b)).toBe(true);
     expect((b as any).props.children).toEqual("link");
   });
 });
