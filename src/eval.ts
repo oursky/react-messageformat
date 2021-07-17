@@ -20,13 +20,13 @@ type PluralFuncByLanguage = Record<string, PluralFunc>;
 
 interface ReactValue {
   __kind: "react";
-  type: React.ReactType;
+  type: React.ElementType;
   props: { [key: string]: Value[] };
 }
 
 interface ReactInternalValue {
   __kind: "react";
-  type: React.ReactType;
+  type: React.ElementType;
   props: { [key: string]: InternalValue[] };
 }
 
@@ -37,10 +37,10 @@ export interface Values {
 }
 
 export interface Components {
-  [key: string]: React.ReactType;
+  [key: string]: React.ElementType;
 }
 
-function getComponent(key: string, components: Components): React.ReactType {
+function getComponent(key: string, components: Components): React.ElementType {
   const c = components[key];
   if (c != null) {
     return c;
@@ -263,7 +263,6 @@ function evaluateToInternalValue(
         }
         default: {
           throw new Error("unexpected type: " + token.type);
-          break;
         }
       }
     }

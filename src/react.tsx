@@ -5,7 +5,7 @@ import { localeToLanguage } from "./locale";
 import { Values, evaluate } from "./eval";
 
 export interface Components {
-  [key: string]: React.ReactType;
+  [key: string]: React.ElementType;
 }
 
 export interface ContextValue {
@@ -13,11 +13,13 @@ export interface ContextValue {
   language: string;
   compile: (id: string) => Token[];
   renderToString: (id: string, values?: Values) => string;
+  defaultComponents?: Components;
 }
 
 export interface ProviderProps {
   locale: string;
   messageByID: { [key: string]: string | undefined };
+  defaultComponents?: Components;
   children?: React.ReactNode;
 }
 
@@ -31,12 +33,7 @@ export interface MessageOwnProps {
   components?: Components;
 }
 
-interface MessageContextProps {
-  language: string;
-  compile: (id: string) => Token[];
-}
-
-type MessageProps = MessageOwnProps & MessageContextProps;
+type MessageProps = MessageOwnProps & ContextValue;
 
 const defaultValue: ContextValue = {
   locale: "en",
@@ -95,10 +92,13 @@ export class LocaleProvider extends React.Component<
 
   renderToString = (id: string, values?: Values) => {
     try {
-      const { locale } = this.props;
+      const { locale, defaultComponents } = this.props;
       const tokens = this.compile(id);
       const language = localeToLanguage(locale);
-      const result = evaluate(tokens, language, values || {}, {});
+      const components = {
+        ...defaultComponents,
+      };
+      const result = evaluate(tokens, language, values || {}, components);
       const output = [];
       for (const a of result) {
         if (typeof a !== "string") {
@@ -114,11 +114,12 @@ export class LocaleProvider extends React.Component<
   };
 
   render() {
-    const { locale, children } = this.props;
+    const { locale, children, defaultComponents } = this.props;
     return (
       <Provider
         value={{
           locale,
+          defaultComponents,
           language: localeToLanguage(locale),
           compile: this.compile,
           renderToString: this.renderToString,
@@ -132,9 +133,20 @@ export class LocaleProvider extends React.Component<
 
 function Message(props: MessageProps) {
   try {
-    const { id, values, components, language, compile } = props;
+    const {
+      id,
+      values,
+      components: ownComponents,
+      defaultComponents,
+      language,
+      compile,
+    } = props;
     const tokens = compile(id);
-    const result = evaluate(tokens, language, values || {}, components || {});
+    const components = {
+      ...defaultComponents,
+      ...ownComponents,
+    };
+    const result = evaluate(tokens, language, values || {}, components);
     const children = [];
     for (let i = 0; i < result.length; ++i) {
       const element = result[i];

@@ -15,6 +15,7 @@ const messageByID = {
   "react.element": "{ANY} {NESTED} {REACT} {ELEMENT}",
   react: "This is a {A, react, href{{SCHEME}://{HOST}} children{link}}",
   "react.nonstring": "This is a {A, react, href{{href}}}",
+  "react.imperative.string": "This is a {B, react}",
 };
 
 function Shortcut(props: MessageOwnProps) {
@@ -154,6 +155,55 @@ test("imperative", () => {
     .create(
       <LocaleProvider locale={locale} messageByID={messageByID}>
         <Input id="plain.string" />
+      </LocaleProvider>
+    )
+    .toJSON();
+  expect(tree).toMatchSnapshot();
+});
+
+test("defaultComponents", () => {
+  const tree = renderer
+    .create(
+      <LocaleProvider
+        locale={locale}
+        messageByID={messageByID}
+        defaultComponents={{
+          A: "a",
+        }}
+      >
+        <FormattedMessage
+          id="react"
+          values={{
+            SCHEME: "https",
+            HOST: "www.example.com",
+          }}
+        />
+      </LocaleProvider>
+    )
+    .toJSON();
+  expect(tree).toMatchSnapshot();
+});
+
+test("components override defaultComponents", () => {
+  const tree = renderer
+    .create(
+      <LocaleProvider
+        locale={locale}
+        messageByID={messageByID}
+        defaultComponents={{
+          A: "a",
+        }}
+      >
+        <FormattedMessage
+          id="react"
+          components={{
+            A: "span",
+          }}
+          values={{
+            SCHEME: "https",
+            HOST: "www.example.com",
+          }}
+        />
       </LocaleProvider>
     )
     .toJSON();

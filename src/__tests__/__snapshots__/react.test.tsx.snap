@@ -45,6 +45,28 @@ Array [
 ]
 `;
 
+exports[`components override defaultComponents 1`] = `
+Array [
+  "This is a ",
+  <span
+    href="https://www.example.com"
+  >
+    link
+  </span>,
+]
+`;
+
+exports[`defaultComponents 1`] = `
+Array [
+  "This is a ",
+  <a
+    href="https://www.example.com"
+  >
+    link
+  </a>,
+]
+`;
+
 exports[`imperative 1`] = `
 <input
   placeholder="Hello world"
