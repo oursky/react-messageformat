@@ -50,6 +50,7 @@ export interface LocaleProviderProps {
   locale: string;
   messageByID: { [key: string]: string | undefined };
   children?: React.ReactNode;
+  defaultComponents?: Components;
 }
 export interface ContextValue {
   locale: string;
