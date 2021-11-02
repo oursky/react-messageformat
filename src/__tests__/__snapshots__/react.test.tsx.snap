@@ -82,3 +82,9 @@ exports[`imperative nested 1`] = `
 exports[`plain.string 1`] = `"Hello world"`;
 
 exports[`plural 1`] = `"four"`;
+
+exports[`regression.0 1`] = `
+<input
+  placeholder="Are you sure to change the B?"
+/>
+`;

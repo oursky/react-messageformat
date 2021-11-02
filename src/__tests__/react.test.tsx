@@ -18,6 +18,8 @@ const messageByID = {
   "react.imperative.string": "This is a {B, react}",
   "react.imperative.nested":
     "This is a {strong, react, children{{i, react, children{content}}}}",
+  "regression.0":
+    "Are you sure to change the {a, select, varianta{A} variantb{B} other{}}?",
 };
 
 function Shortcut(props: MessageOwnProps) {
@@ -194,6 +196,20 @@ test("components override defaultComponents", () => {
         values={{
           SCHEME: "https",
           HOST: "www.example.com",
+        }}
+      />
+    </LocaleProvider>
+  ).toJSON();
+  expect(tree).toMatchSnapshot();
+});
+
+test("regression.0", () => {
+  const tree = create(
+    <LocaleProvider locale={locale} messageByID={messageByID}>
+      <Input
+        id="regression.0"
+        values={{
+          a: "variantb",
         }}
       />
     </LocaleProvider>

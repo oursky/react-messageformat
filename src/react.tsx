@@ -1,5 +1,5 @@
 import * as React from "react";
-import { renderToString as reactServerDOMRenderToString } from "react-dom/server";
+import { renderToStaticMarkup } from "react-dom/server";
 import { Token } from "@louischan-oursky/messageformat-parser";
 import { parse } from "./parse";
 import { localeToLanguage } from "./locale";
@@ -106,7 +106,9 @@ export class LocaleProvider extends React.Component<
         children.push(<React.Fragment key={i}>{element}</React.Fragment>);
       }
       const tree = <>{children}</>;
-      return reactServerDOMRenderToString(tree);
+      // We cannot use renderToString because it adds extra attributes and HTML comments for hydrate().
+      // See https://reactjs.org/docs/react-dom-server.html#rendertostaticmarkup
+      return renderToStaticMarkup(tree);
     } catch (e) {
       console.warn(e);
       return "";
