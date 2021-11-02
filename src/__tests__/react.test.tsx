@@ -16,6 +16,8 @@ const messageByID = {
   react: "This is a {A, react, href{{SCHEME}://{HOST}} children{link}}",
   "react.nonstring": "This is a {A, react, href{{href}}}",
   "react.imperative.string": "This is a {B, react}",
+  "react.imperative.nested":
+    "This is a {strong, react, children{{i, react, children{content}}}}",
 };
 
 function Shortcut(props: MessageOwnProps) {
@@ -140,6 +142,15 @@ test("imperative", () => {
   const tree = create(
     <LocaleProvider locale={locale} messageByID={messageByID}>
       <Input id="plain.string" />
+    </LocaleProvider>
+  ).toJSON();
+  expect(tree).toMatchSnapshot();
+});
+
+test("imperative nested", () => {
+  const tree = create(
+    <LocaleProvider locale={locale} messageByID={messageByID}>
+      <Input id="react.imperative.nested" />
     </LocaleProvider>
   ).toJSON();
   expect(tree).toMatchSnapshot();

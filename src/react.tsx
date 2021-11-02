@@ -1,4 +1,5 @@
 import * as React from "react";
+import { renderToString as reactServerDOMRenderToString } from "react-dom/server";
 import { Token } from "@louischan-oursky/messageformat-parser";
 import { parse } from "./parse";
 import { localeToLanguage } from "./locale";
@@ -99,14 +100,13 @@ export class LocaleProvider extends React.Component<
         ...defaultComponents,
       };
       const result = evaluate(tokens, language, values || {}, components);
-      const output = [];
-      for (const a of result) {
-        if (typeof a !== "string") {
-          throw new Error(`unexpected non-string value "${id}"`);
-        }
-        output.push(a);
+      const children = [];
+      for (let i = 0; i < result.length; ++i) {
+        const element = result[i];
+        children.push(<React.Fragment key={i}>{element}</React.Fragment>);
       }
-      return output.join("");
+      const tree = <>{children}</>;
+      return reactServerDOMRenderToString(tree);
     } catch (e) {
       console.warn(e);
       return "";

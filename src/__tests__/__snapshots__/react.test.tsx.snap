@@ -73,6 +73,12 @@ exports[`imperative 1`] = `
 />
 `;
 
+exports[`imperative nested 1`] = `
+<input
+  placeholder="This is a <strong><i>content</i></strong>"
+/>
+`;
+
 exports[`plain.string 1`] = `"Hello world"`;
 
 exports[`plural 1`] = `"four"`;
