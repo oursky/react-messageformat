@@ -161,8 +161,21 @@ test("imperative", () => {
 });
 
 test("imperative nested", () => {
+  // renderToString is intended to produce plain string.
+  // It supports nested component that renders string.
+  class SomethingRenderToString extends React.Component {
+    render() {
+      return "nested";
+    }
+  }
+
   const tree = create(
-    <ImperativeMessage message="This is a {strong, react, children{{i, react, children{content}}}}" />
+    <ImperativeMessage
+      message="This is {NESTED}"
+      values={{
+        NESTED: <SomethingRenderToString />,
+      }}
+    />
   ).toJSON();
   expect(tree).toMatchSnapshot();
 });

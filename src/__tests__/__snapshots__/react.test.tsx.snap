@@ -75,7 +75,7 @@ exports[`imperative 1`] = `
 
 exports[`imperative nested 1`] = `
 <input
-  placeholder="This is a <strong><i>content</i></strong>"
+  placeholder="This is nested"
 />
 `;
 
