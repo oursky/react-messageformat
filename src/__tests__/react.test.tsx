@@ -244,3 +244,11 @@ test("regression.0", () => {
   ).toJSON();
   expect(tree).toMatchSnapshot();
 });
+
+test("regression.1", () => {
+  // ' is normally HTML-escaped as &#x27;
+  const tree = create(
+    <ImperativeMessage message="Message shouldn''t be HTML-escaped." />
+  ).toJSON();
+  expect(tree).toMatchSnapshot();
+});

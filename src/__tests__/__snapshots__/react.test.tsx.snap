@@ -88,3 +88,9 @@ exports[`regression.0 1`] = `
   placeholder="Are you sure to change the B?"
 />
 `;
+
+exports[`regression.1 1`] = `
+<input
+  placeholder="Message shouldn't be HTML-escaped."
+/>
+`;

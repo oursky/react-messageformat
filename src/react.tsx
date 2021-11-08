@@ -1,6 +1,7 @@
 import * as React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { Token } from "@louischan-oursky/messageformat-parser";
+import { decodeHTML5Strict } from "entities";
 import { parse } from "./parse";
 import { localeToLanguage } from "./locale";
 import { Values, evaluate } from "./eval";
@@ -108,7 +109,10 @@ export class LocaleProvider extends React.Component<
       const tree = <>{children}</>;
       // We cannot use renderToString because it adds extra attributes and HTML comments for hydrate().
       // See https://reactjs.org/docs/react-dom-server.html#rendertostaticmarkup
-      return renderToStaticMarkup(tree);
+      const htmlString = renderToStaticMarkup(tree);
+      // We cannot simply return htmlString because it is HTML and its content is escaped.
+      // This also implies setting the result of renderToString as innerHTML is extremely unsafe!!!
+      return decodeHTML5Strict(htmlString);
     } catch (e) {
       console.warn(e);
       return "";
