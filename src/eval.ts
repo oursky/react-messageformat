@@ -350,6 +350,7 @@ function toOutputValues(values: Value[]): OutputValue[] {
         );
       } else {
         output.push(
+          // @ts-expect-error Type 'object' is not assignable to type 'ReactNode'
           React.createElement(component, propsExcludingChildren, children)
         );
       }

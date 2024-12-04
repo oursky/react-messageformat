@@ -106,6 +106,7 @@ export class LocaleProvider extends React.Component<
       const children = [];
       for (let i = 0; i < result.length; ++i) {
         const element = result[i];
+        // @ts-expect-error Type 'object' is not assignable to type 'ReactNode'
         children.push(<React.Fragment key={i}>{element}</React.Fragment>);
       }
       const tree = <>{children}</>;
@@ -158,6 +159,7 @@ function Message(props: MessageProps) {
     const children = [];
     for (let i = 0; i < result.length; ++i) {
       const element = result[i];
+      // @ts-expect-error Type 'object' is not assignable to type 'ReactNode'
       children.push(<React.Fragment key={i}>{element}</React.Fragment>);
     }
     return <>{children}</>;
