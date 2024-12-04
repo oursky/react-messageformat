@@ -44,7 +44,7 @@
     "typescript": "^5.7.2"
   },
   "dependencies": {
-    "@louischan-oursky/messageformat-parser": "0.3.0",
+    "@louischan-oursky/messageformat-parser": "0.4.3",
     "entities": "^5.0.0",
     "make-plural": "^7.4.0"
   },
