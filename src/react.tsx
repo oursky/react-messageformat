@@ -86,8 +86,10 @@ export class LocaleProvider extends React.Component<
       };
       return tokens;
     } catch (e) {
-      const message = e.message;
-      e.message = `"${id}": ${message}`;
+      if (e instanceof Error) {
+        const message = e.message;
+        e.message = `"${id}": ${message}`;
+      }
       throw e;
     }
   };

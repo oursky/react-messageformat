@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Embedded React Element 1`] = `
-Array [
+[
   "This is a ",
   <a
     href="https://www.example.com"
@@ -12,11 +12,11 @@ Array [
 `;
 
 exports[`Embedded React Element with non-string value 1`] = `
-Array [
+[
   "This is a ",
   <a
     href={
-      Object {
+      {
         "toString": [Function],
         "valueOf": [Function],
       }
@@ -26,7 +26,7 @@ Array [
 `;
 
 exports[`React Element as value 1`] = `
-Array [
+[
   "Hello world",
   " ",
   "AnyComponent",
@@ -39,14 +39,14 @@ Array [
 `;
 
 exports[`argument 1`] = `
-Array [
+[
   "I meet ",
   "John",
 ]
 `;
 
 exports[`components override defaultComponents 1`] = `
-Array [
+[
   "This is a ",
   <span
     href="https://www.example.com"
@@ -57,7 +57,7 @@ Array [
 `;
 
 exports[`defaultComponents 1`] = `
-Array [
+[
   "This is a ",
   <a
     href="https://www.example.com"

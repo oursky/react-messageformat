@@ -131,6 +131,7 @@ function resolveSelectCase(select: Select, values?: Values): SelectCase {
 }
 
 function resolvePluralFunc(language: string): PluralFunc {
+  // @ts-expect-error
   const m: PluralFuncByLanguage = Plurals;
   const func = m[language];
   if (func == null) {
