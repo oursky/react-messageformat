@@ -2,7 +2,8 @@ import babel from "@rollup/plugin-babel";
 import commonjs from "@rollup/plugin-commonjs";
 import json from "@rollup/plugin-json";
 import resolve from "@rollup/plugin-node-resolve";
-import pkg from "./package.json";
+// See https://rollupjs.org/command-line-interface/#importing-package-json
+import pkg from './package.json' with { type: 'json' };
 
 const deps = Object.keys(pkg.dependencies || {});
 const peerDeps = Object.keys(pkg.peerDependencies || {});
