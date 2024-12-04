@@ -39,6 +39,7 @@ const plugins = [
 
 export default [
   {
+    strictDeprecations: true,
     input: "src/index.ts",
     external,
     plugins,
@@ -48,6 +49,7 @@ export default [
     },
   },
   {
+    strictDeprecations: true,
     input: "src/index.ts",
     external,
     plugins,
