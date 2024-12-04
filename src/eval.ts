@@ -9,12 +9,12 @@ import {
   PluralCase,
 } from "@louischan-oursky/messageformat-parser";
 import * as React from "react";
+import type { PluralCategory } from "make-plural/plurals";
 import * as Plurals from "make-plural/plurals";
 
 export type Value = string | number | ReactValue | object;
 export type OutputValue = string | React.ReactElement<any> | object;
 
-type PluralCategory = "zero" | "one" | "two" | "few" | "many" | "other";
 type PluralFunc = (n: number | string, ord?: boolean) => PluralCategory;
 type PluralFuncByLanguage = Record<string, PluralFunc>;
 
