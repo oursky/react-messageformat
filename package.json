@@ -45,7 +45,7 @@
   },
   "dependencies": {
     "@louischan-oursky/messageformat-parser": "0.3.0",
-    "entities": "3.0.1",
+    "entities": "^5.0.0",
     "make-plural": "6.2.2"
   },
   "peerDependencies": {
