@@ -1,5 +1,7 @@
 # react-messageformat
 
+## As of Apr 2025, this project is no longer maintained, please checkout https://messageformat.unicode.org/ for MessageFormat 2
+
 ## Installation
 
 ```sh
